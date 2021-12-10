@@ -19,14 +19,10 @@ function App() {
   const [movies, setMovies] = useState([])
   const [page, setPage] = useState(1)
   useEffect( () => {
-    const getPopularMovies = () => {
-      fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${process.env.REACT_APP_API_KEY}&language=en-US&page=` + page.toString())
-      .then(res => res.json())
-      .then(data => {
-        let newMovieList = movies.concat(data['results'])
-        setMovies(newMovieList)
-
-      })
+    async function getPopularMovies () {
+      const res = await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${process.env.REACT_APP_API_KEY}&language=en-US&page=` + page.toString())
+      const json = await res.json()
+      setMovies(old => old.concat(json['results']))
     }
     getPopularMovies()
   }, [page])
