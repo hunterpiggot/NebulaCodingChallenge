@@ -7,13 +7,6 @@ import { Row } from "react-bootstrap";
 import { Container } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import { Col } from "react-bootstrap";
-// https://api.themoviedb.org/3/movie/popular?api_key=d96ab2a8c750cccd92dd3d9a826b2c26&language=en-US&page=1
-
-// https://api.themoviedb.org/3/movie/762433/images?api_key=d96ab2a8c750cccd92dd3d9a826b2c26&language=en-US
-
-// movies.push(data['results']
-
-// setMovies(movies.concat(data['results']))
 
 function App() {
   const [movies, setMovies] = useState([])
