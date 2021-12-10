@@ -1,23 +1,58 @@
-import logo from './logo.svg';
-import './App.css';
+// import logo from './logo.svg';
+
+import { useEffect, useState } from "react";
+
+import { Card } from "react-bootstrap";
+import { Row } from "react-bootstrap";
+import { Container } from "react-bootstrap";
+import { Button } from "react-bootstrap";
+import { Col } from "react-bootstrap";
+// https://api.themoviedb.org/3/movie/popular?api_key=d96ab2a8c750cccd92dd3d9a826b2c26&language=en-US&page=1
+
+// https://api.themoviedb.org/3/movie/762433/images?api_key=d96ab2a8c750cccd92dd3d9a826b2c26&language=en-US
+
+// movies.push(data['results']
+
+// setMovies(movies.concat(data['results']))
 
 function App() {
+  const [movies, setMovies] = useState([])
+  const [page, setPage] = useState(1)
+  useEffect( () => {
+    const getPopularMovies = () => {
+      fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${process.env.REACT_APP_API_KEY}&language=en-US&page=` + page.toString())
+      .then(res => res.json())
+      .then(data => {
+        let newMovieList = movies.concat(data['results'])
+        setMovies(newMovieList)
+
+      })
+    }
+    getPopularMovies()
+  }, [page])
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1 style={{marginTop: "50px", marginBottom: "50px"}} className="text-center">Popular Movies</h1>
+      <Container>
+      <Row xs={1} md={2} className="g-4">
+      {movies.map((movie, idx) => 
+        <Card key={idx}>
+          <Card.Img variant="top" src={`https://image.tmdb.org/t/p/w500${movie['poster_path']}`} />
+          <Card.Body>
+            <Card.Title>{movie['title']}</Card.Title>
+            <Card.Text>
+              {movie['overview']}
+            </Card.Text>
+          </Card.Body>
+        </Card>
+      )}
+      </Row>
+      </Container>
+      <Container className="justify-content-md-center">
+        <Col xs="auto" className="text-center">
+          <Button style={{marginTop: "50px", marginBottom: "50px"}} xs="auto" onClick={() => setPage(page +1)}>Show More</Button>
+        </Col>
+      </Container>
     </div>
   );
 }
